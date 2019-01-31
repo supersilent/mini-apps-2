@@ -6,9 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "json-server --watch data/db.json --static ./public",
-    "build": "webpack",
-    "react": "^16.6.3",
-    "react-dom": "^16.6.3"
+    "build": "webpack"
   },
   "keywords": [],
   "author": "",

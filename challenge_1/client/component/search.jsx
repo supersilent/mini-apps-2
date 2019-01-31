@@ -8,7 +8,6 @@ export default class Search extends Component {
     this.state = {
       keyword: "",
       result: [],
-      offset: 0,
       pageCount: 0
     };
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -26,9 +25,12 @@ export default class Search extends Component {
   }
 
   async loadDataFromServer(page) {
-    let result = await Axios.get(
-      `events?q=${this.state.keyword}&_page=${page}`
-    );
+    let result = await Axios.get(`events`, {
+      params: {
+        q: this.state.keyword,
+        _page: page
+      }
+    });
     await this.setState({ result: result.data });
   }
 
@@ -36,16 +38,8 @@ export default class Search extends Component {
     await this.setState({ keyword: event.target.value });
   }
 
-  date(str) {
-    if (str[0] === "-") {
-      return <h3>BC {str.slice(1)}</h3>;
-    } else {
-      return <h3>AD {str}</h3>;
-    }
-  }
   handlePageClick(data) {
     let selected = data.selected;
-    this.setState({ offset: selected });
     this.loadDataFromServer(selected);
   }
 
@@ -53,7 +47,11 @@ export default class Search extends Component {
     let contents = this.state.result.map(content => {
       return (
         <div>
-          {this.date(content.date)}
+          {content.date[0] === "-" ? (
+            <h3>B.C. {content.date.slice(1)}</h3>
+          ) : (
+            <h3>A.D. {content.date}</h3>
+          )}
           <p>{content.description}</p>
         </div>
       );
