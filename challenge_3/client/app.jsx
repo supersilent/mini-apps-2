@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import Keypad from "./component/keypad.jsx";
 import ScoreBoard from "./component/scoreboard.jsx";
+
 export default class App extends Component {
   constructor(props) {
     super(props);
@@ -15,8 +16,13 @@ export default class App extends Component {
 
   throwBall(pinNumber) {
     let currFrame = this.state.currFrame;
-    if (currFrame < 10) {
-      let score1 = this.state.score1;
+    let score1 = this.state.score1;
+    if (
+      currFrame < 10 &&
+      (!score1[currFrame][0] ||
+        (currFrame < 9 && score1[currFrame][0] + pinNumber < 11) ||
+        currFrame === 9)
+    ) {
       score1[currFrame].push(pinNumber);
       if (
         (currFrame < 9 && pinNumber === 10) ||
@@ -24,8 +30,8 @@ export default class App extends Component {
         score1[currFrame].length === 3
       ) {
         currFrame++;
-        this.setState({ score1, currFrame });
       }
+      this.setState({ score1, currFrame });
     }
   }
 

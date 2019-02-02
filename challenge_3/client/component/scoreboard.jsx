@@ -7,6 +7,7 @@ export default class ScoreBoard extends Component {
     this.rolls.bind(this);
     this.scores.bind(this);
   }
+
   rolls() {
     let scoreBoard1 = this.props.score1.map((score, index) => {
       if (index < 9) {
@@ -32,6 +33,7 @@ export default class ScoreBoard extends Component {
 
   scores() {
     let scoreBoard1 = [];
+    let totalScore = 0;
     for (let i = 0; i < this.props.score1.length; i++) {
       let score = this.props.score1[i][0];
       if (this.props.score1[i][1]) {
@@ -63,7 +65,10 @@ export default class ScoreBoard extends Component {
       } else {
         scoreBoard1.push(<td colspan="2">{isNaN(score) ? null : score}</td>);
       }
+      if (!isNaN(score)) totalScore += score;
     }
+    scoreBoard1.push(<td>{isNaN(totalScore) ? null : totalScore}</td>);
+
     return scoreBoard1;
   }
 
@@ -73,6 +78,7 @@ export default class ScoreBoard extends Component {
       header.push(<th colspan="2">{i + 1}</th>);
     }
     header.push(<th colspan="3">10</th>);
+    header.push(<th>Total</th>);
     return (
       <div>
         <Table bordered>
